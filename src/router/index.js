@@ -9,6 +9,7 @@ const PublicPage = () => import("@/pages/public-page.vue");
 const ProtectedPage = () => import("@/pages/protected-page.vue");
 const AdminPage = () => import("@/pages/admin-page.vue");
 const TestPage = () => import("@/pages/test-page.vue");
+const PlayPage = () => import("@/pages/play-page.vue");
 
 const routes = [
   {
@@ -23,20 +24,9 @@ const routes = [
     beforeEnter: authGuard,
   },
   {
-    path: "/public",
-    name: "public",
-    component: PublicPage,
-  },
-  {
-    path: "/protected",
-    name: "protected",
-    component: ProtectedPage,
-    beforeEnter: authGuard,
-  },
-  {
-    path: "/admin",
-    name: "admin",
-    component: AdminPage,
+    path: "/play-game",
+    name: "play-game",
+    component: PlayPage,
     beforeEnter: authGuard,
   },
   {

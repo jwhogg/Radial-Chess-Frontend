@@ -100,7 +100,7 @@
 .mobile-nav-bar__tab--active {
   text-decoration-line: underline;
   text-decoration-style: solid;
-  text-decoration-color: var(--indigo);
+  text-decoration-color: orangered;
 
   /* responsive */
 

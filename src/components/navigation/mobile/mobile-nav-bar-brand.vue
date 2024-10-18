@@ -3,10 +3,9 @@
     <router-link to="/">
       <img
         class="mobile-nav-bar__logo"
-        src="https://cdn.auth0.com/blog/hub/code-samples/hello-world/auth0-logo.svg"
-        alt="Auth0 shield logo"
-        width="82"
-        height="24"
+        src="../../../assets/logo.png"
+        width="32"
+        height="32"
       />
     </router-link>
   </div>

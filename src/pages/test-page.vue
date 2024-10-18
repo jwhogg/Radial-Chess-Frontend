@@ -22,8 +22,8 @@
             })
   
             // Make an HTTP request to the Rust backend
-            const response = await fetch('http://127.0.0.1:8080/test', {
-              method: 'GET',
+            const response = await fetch('http://127.0.0.1:8080/matchmaking', {
+              method: 'POST',
               headers: {
                 'Authorization': `Bearer ${token}`,  // Include the token in the header
                 'Content-Type': 'application/json',

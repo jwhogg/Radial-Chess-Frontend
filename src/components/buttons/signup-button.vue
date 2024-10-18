@@ -10,7 +10,7 @@ const { loginWithRedirect } = useAuth0();
 const handleSignUp = () => {
   loginWithRedirect({
     appState: {
-      target: "/profile",
+      target: "/",
     },
     authorizationParams: {
       prompt: "login",

@@ -1,11 +1,9 @@
 <template>
   <div class="nav-bar__tabs">
-    <NavBarTab path="/profile" label="Profile" />
-    <NavBarTab path="/public" label="Public" />
     <template v-if="isAuthenticated">
-      <NavBarTab path="/protected" label="Protected" />
-      <NavBarTab path="/admin" label="Admin" />
+      <NavBarTab path="/play-game" label="Play" />
     </template>
+    <NavBarTab path="/profile" label="Profile" />
   </div>
 </template>
 
