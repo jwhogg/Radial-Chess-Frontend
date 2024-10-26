@@ -5,7 +5,7 @@
           <PageLoader />
         </div>
         <div v-else>
-          <TheChessboard />
+          <TheChessboard @move="handleMove" :player-color="playerColor" @board-created="(api) => (boardAPI = api)"/>
         </div>
       </div>
     </PageLayout>
@@ -25,7 +25,40 @@
   const isConnected = ref(false);
   const pollingInterval = ref(null);
   const ws = ref(null);
+  const playerColor = ref('white');
+
+  let boardAPI;
+
   
+  function handleMove(move) {
+    console.log(move);
+    let promotion = move.promotion ?? "None";
+    let captured = move.captured ?? "None";
+    let message = JSON.stringify({
+        event: "game_move",
+        data: {
+            player: playerColor.value,
+            this_move: {
+                from: move.from,
+                to: move.to,
+                flags: move.flags,
+                captured: captured,
+                promotion: promotion,
+            },
+            status: "ClientMessage",
+        }
+    });
+
+    console.log("message: ", message);
+
+    // Ensure WebSocket is in OPEN state before sending the message
+    if (ws.value.readyState === WebSocket.OPEN) {
+        ws.value.send(message);
+    } else {
+        console.error("WebSocket connection is not open. Current state:", ws.value.readyState);
+    }
+}
+
   const postMatchmaking = async () => {
     if (!isAuthenticated.value) return;
   
@@ -92,7 +125,30 @@
         console.log("Received message:", message);
   
         if (message.event === "game_initiated") {
+          playerColor.value = message.playercolour;
+          if (playerColor.value == "black") {boardAPI?.toggleOrientation()};
+          console.log("set playerColour to: ", playerColor.value);
           loading.value = false;  // Stop loading spinner and show the chessboard
+        }
+
+        if (message.event === "game_move") {
+            if (message.data.status == "EchoFailure") {
+                boardAPI.undoLastMove();
+            }
+            else if (message.data.status == "EchoSuccess") {
+                console.log("move validated!");
+            }
+            else if (message.data.status == "UpdateNewMove") {
+                let opponent_move = message.data.this_move;
+                console.log("opponent move: ", opponent_move)
+                did_move = boardAPI.move({
+                    from: opponent_move.from,
+                    to: opponent_move.to,
+                    promotion: (opponent_move.promotion !== "None" ? opponent_move.promotion : null)
+                });
+
+                console.log("move made? ", did_move);
+            }
         }
       };
   
