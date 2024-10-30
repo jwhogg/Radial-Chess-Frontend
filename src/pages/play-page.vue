@@ -5,7 +5,7 @@
           <PageLoader />
         </div>
         <div v-else>
-          <TheChessboard @move="handleMove" :player-color="playerColor" @board-created="(api) => (boardAPI = api)"/>
+          <TheChessboard @move="handleMove" :player-color="playerColor" @board-created="(api) => (boardAPI = api)" :board-config="boardConfig"/>
         </div>
       </div>
     </PageLayout>
@@ -29,16 +29,25 @@
 
   let boardAPI;
 
+  let boardConfig = {
+  coordinates: true,
+  autoCastle: false,
+  orientation: 'white',
+};
+
   
   function handleMove(move) {
     console.log(move);
+    if (move.color != playerColor.value.charAt(0).toLowerCase()) {
+        return; // return early if the move triggered is the opponents
+    }
     let promotion = move.promotion ?? "None";
     let captured = move.captured ?? "None";
     let message = JSON.stringify({
         event: "game_move",
         data: {
             player: playerColor.value,
-            this_move: {
+            thisMove: {
                 from: move.from,
                 to: move.to,
                 flags: move.flags,
@@ -126,6 +135,7 @@
   
         if (message.event === "game_initiated") {
           playerColor.value = message.playercolour;
+          boardConfig.orientation = message.playercolour;
           if (playerColor.value == "black") {boardAPI?.toggleOrientation()};
           console.log("set playerColour to: ", playerColor.value);
           loading.value = false;  // Stop loading spinner and show the chessboard
@@ -139,9 +149,9 @@
                 console.log("move validated!");
             }
             else if (message.data.status == "UpdateNewMove") {
-                let opponent_move = message.data.this_move;
+                let opponent_move = message.data.thisMove;
                 console.log("opponent move: ", opponent_move)
-                did_move = boardAPI.move({
+                let did_move = boardAPI.move({
                     from: opponent_move.from,
                     to: opponent_move.to,
                     promotion: (opponent_move.promotion !== "None" ? opponent_move.promotion : null)
