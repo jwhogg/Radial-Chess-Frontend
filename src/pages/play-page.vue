@@ -106,7 +106,7 @@
         },
       });
   
-      if (response.ok) {
+      if (response.status === 200) {
         // Matchmaking is complete, stop polling and open WebSocket
         clearInterval(pollingInterval.value);
         connectToWebSocket(token);
