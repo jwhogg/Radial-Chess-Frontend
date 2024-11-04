@@ -18,6 +18,7 @@
   import 'vue3-chessboard/style.css';
   import PageLoader from "@/components/page-loader.vue";
   import { useAuth0 } from '@auth0/auth0-vue';
+  import router from '../router';
   
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const loading = ref(true);
@@ -114,11 +115,10 @@ async function handleCheckmate(isMated) {
             ws.value.send(message);
         
             try {
-                const response = await waitForResponse("ConfirmSurrendered");
+                // const response = await waitForResponse("ConfirmSurrendered");
                 console.log("Received response:", response);
                 alert("Game Over- Checkmate!");
                 ws.value.close(1000, 'Closing connection normally');
-                window.location.href('/'); //reset to homepage
             } catch (error) {
                 console.error("Error waiting for response:", error.message);
                 loading.value = true;
@@ -156,6 +156,8 @@ async function handleCheckmate(isMated) {
       }
     } catch (error) {
       console.error('Error during POST /matchmaking:', error);
+      console.log('going to poll anyway..');
+      pollingInterval.value = setInterval(() => pollMatchmaking(token), 2000);
     }
   };
   
@@ -197,6 +199,11 @@ async function handleCheckmate(isMated) {
                 console.log('Ping sent');
             }
         }, 1000); // 1 seconds interval
+
+        ws.value.addEventListener('close', function (event) {
+            console.log("connection closed (caught by event listener):, ", event);
+            router.push({ path: '/' });
+        });
     };
   
       ws.value.onmessage = (event) => {
@@ -249,6 +256,7 @@ async function handleCheckmate(isMated) {
       ws.value.onclose = () => {
         isConnected.value = false;
         console.log("Disconnected from WebSocket");
+        router.push({ path: '/' });
       };
     } catch (error) {
       console.error("Error while connecting to WebSocket", error);
