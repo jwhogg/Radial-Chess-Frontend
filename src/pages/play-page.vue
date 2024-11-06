@@ -167,6 +167,7 @@ async function handleCheckmate(isMated) {
       const response = await fetch('http://127.0.0.1:8080/matchmaking', {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
   
