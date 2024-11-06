@@ -67,7 +67,7 @@
 .player-stats {
   background: linear-gradient(135deg, #B8B08D, #F2D492); /* Orange gradient */
   color: #ffffff; /* White text for contrast */
-  border-radius: 12px;
+  border-radius: 11px;
   padding: 20px;
   width: 180px;  /* Narrower width for a playing card look */
   height: 280px; /* Taller height for a playing card look */
