@@ -5,9 +5,6 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const NotFoundPage = () => import("@/pages/not-found-page.vue");
 const ProfilePage = () => import("@/pages/profile-page.vue");
-const PublicPage = () => import("@/pages/public-page.vue");
-const ProtectedPage = () => import("@/pages/protected-page.vue");
-const AdminPage = () => import("@/pages/admin-page.vue");
 const TestPage = () => import("@/pages/test-page.vue");
 const PlayPage = () => import("@/pages/play-page.vue");
 const TestWebsocket = () => import("@/pages/test-websocket.vue");
