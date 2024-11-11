@@ -45,7 +45,7 @@
     console.log('Mounted...')
     if (isAuthenticated.value) {
       fetchData() // Initial fetch
-      intervalId = setInterval(fetchData, 5000) // Fetch every 5 seconds
+      intervalId = setInterval(fetchData, 10000) // Fetch every 5 seconds
     }
   })
   
