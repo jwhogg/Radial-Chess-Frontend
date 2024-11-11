@@ -6,6 +6,8 @@ import router from "./router";
 
 const app = createApp(App);
 
+console.log("Callback URL: ", import.meta.env.VITE_AUTH0_CALLBACK_URL);
+
 app
   .use(router)
   .use(
